@@ -6,6 +6,7 @@ using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Playables;
+using UnityEngine.UIElements;
 using Vector2 = UnityEngine.Vector2;
 
 public class PlayerMovement : MonoBehaviour
@@ -24,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
     private Facing lastFacing = Facing.front, currentFacing;
     private MovementState currentState = MovementState.idle;
     public ContactFilter2D movementFilter;
-    [SerializeField] private LayerMask barrier;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -35,14 +35,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (IsBehind())
-        {
-            sr.sortingLayerID = SortingLayer.NameToID("Player");
-        }
-        else
-        {
-            sr.sortingLayerID = SortingLayer.NameToID("Default");
-        }
         AnimationStateUpdate();
     }
 
@@ -115,10 +107,5 @@ public class PlayerMovement : MonoBehaviour
 
         anim.SetInteger("state", (int)currentState);
         anim.SetInteger("facing", (int)currentFacing);
-    }
-
-   private bool IsBehind()
-    {
-        return Physics2D.BoxCast(new Vector2(bc.bounds.center.x, bc.bounds.center.y - 0.375f), new Vector2(bc.bounds.size.x + 0.5f, bc.bounds.size.y + 0.5f), 0f, Vector2.down, .1f, barrier);
     }
 }
