@@ -5,6 +5,7 @@ using System.Threading;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.Playables;
 using UnityEngine.UIElements;
 using Vector2 = UnityEngine.Vector2;
@@ -54,19 +55,21 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void OnMove(InputValue movementValue)
-    {
-        movement = movementValue.Get<Vector2>();
-    }
-
     private bool TryMove(Vector2 direction)
     {   
-        int count = rb.Cast(movement, movementFilter, castCollisions, movementSpeed * Time.fixedDeltaTime + collisionOffset);
-
-        if(count == 0)
+        if (!anim.GetBool("attack"))
         {
-            rb.MovePosition(rb.position + (movement * movementSpeed * Time.fixedDeltaTime));
-            return true;
+            int count = rb.Cast(movement, movementFilter, castCollisions, movementSpeed * Time.fixedDeltaTime + collisionOffset);
+
+            if(count == 0)
+            {
+                rb.MovePosition(rb.position + (movement * movementSpeed * Time.fixedDeltaTime));
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
@@ -107,5 +110,10 @@ public class PlayerMovement : MonoBehaviour
 
         anim.SetInteger("state", (int)currentState);
         anim.SetInteger("facing", (int)currentFacing);
+    }
+
+    private void OnMove(InputValue movementValue)
+    {
+        movement = movementValue.Get<Vector2>();
     }
 }

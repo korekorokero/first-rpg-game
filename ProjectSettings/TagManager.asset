@@ -45,7 +45,7 @@ TagManager:
   - name: Terrain (Floor)
     uniqueID: 1302618265
     locked: 0
-  - name: Terrain (Barrier 1)
+  - name: Terrain (Barrier)
     uniqueID: 1041587459
     locked: 0
   - name: Player
