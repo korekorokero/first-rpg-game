@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -6,6 +7,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerAction : MonoBehaviour
 {
+    private bool buttonHold = false;
+    private int attackCount = 0;
+
     private Animator anim;
 
     private void Start()
@@ -18,10 +22,30 @@ public class PlayerAction : MonoBehaviour
         AttackAnimation();
     }
 
+    private void OnAttack(InputValue attackValue)
+    {
+        if (attackValue.isPressed)
+        {
+            anim.SetBool("attack", true);
+            buttonHold = true;
+        }
+        else
+        {
+            attackCount = (int)Math.Ceiling(anim.GetCurrentAnimatorStateInfo(0).normalizedTime);
+            buttonHold = false;
+        }
+    }
+
     private void OnFire(InputValue fireValue)
     {
-        Debug.Log("Fire!");
-        anim.SetBool("attack", true);
+        if (fireValue.isPressed)
+        {
+            anim.SetBool("fire", true);
+        }
+        else
+        {
+            anim.SetBool("fire", false);
+        }
     }
 
     private void AttackAnimation()
@@ -30,7 +54,7 @@ public class PlayerAction : MonoBehaviour
         {
             string clipName = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
             clipName = clipName.Remove(13, clipName.Length - 13);
-            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f && clipName == "Player_Attack")
+            if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= (float)attackCount && clipName == "Player_Attack" && !buttonHold)
             {
                 anim.SetBool("attack", false);
             }

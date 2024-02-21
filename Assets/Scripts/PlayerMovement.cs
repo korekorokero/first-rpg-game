@@ -57,13 +57,13 @@ public class PlayerMovement : MonoBehaviour
 
     private bool TryMove(Vector2 direction)
     {   
-        if (!anim.GetBool("attack"))
+        if (!anim.GetBool("fire") && !anim.GetBool("attack"))
         {
-            int count = rb.Cast(movement, movementFilter, castCollisions, movementSpeed * Time.fixedDeltaTime + collisionOffset);
+            int count = rb.Cast(direction, movementFilter, castCollisions, movementSpeed * Time.fixedDeltaTime + collisionOffset);
 
             if(count == 0)
             {
-                rb.MovePosition(rb.position + (movement * movementSpeed * Time.fixedDeltaTime));
+                rb.MovePosition(rb.position + (direction * movementSpeed * Time.fixedDeltaTime));
                 return true;
             }
             else
