@@ -4,5 +4,5 @@
 
 Controls:
 - WASD to move
-- press/hold LMB to do a short range attack
-- hold RMB to charge an arrow and release to fire
+- Press/hold LMB to do a short range attack
+- Hold RMB to charge an arrow and release to fire
