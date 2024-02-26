@@ -79,33 +79,35 @@ public class PlayerMovement : MonoBehaviour
 
     private void AnimationStateUpdate()
     {
-        
-        if (movement.x > 0f)
+        if (!anim.GetBool("fire") && !anim.GetBool("attack"))
         {
-            currentState = MovementState.walking;
-            currentFacing = lastFacing = Facing.side;
-            sr.flipX = false;
-        }
-        else if (movement.x < 0f)
-        {
-            currentState = MovementState.walking;
-            currentFacing = lastFacing = Facing.side;
-            sr.flipX = true;
-        }
-        else if (movement.y > 0f)
-        {
-            currentState = MovementState.walking;
-            currentFacing = lastFacing = Facing.back;
-        }
-        else if (movement.y < 0f)
-        {
-            currentState = MovementState.walking;
-            currentFacing = lastFacing = Facing.front;
-        }
-        else
-        {
-            currentState = MovementState.idle;
-            currentFacing = lastFacing;
+            if (movement.x > 0f)
+            {
+                currentState = MovementState.walking;
+                currentFacing = lastFacing = Facing.side;
+                sr.flipX = false;
+            }
+            else if (movement.x < 0f)
+            {
+                currentState = MovementState.walking;
+                currentFacing = lastFacing = Facing.side;
+                sr.flipX = true;
+            }
+            else if (movement.y > 0f)
+            {
+                currentState = MovementState.walking;
+                currentFacing = lastFacing = Facing.back;
+            }
+            else if (movement.y < 0f)
+            {
+                currentState = MovementState.walking;
+                currentFacing = lastFacing = Facing.front;
+            }
+            else
+            {
+                currentState = MovementState.idle;
+                currentFacing = lastFacing;
+            }
         }
 
         anim.SetInteger("state", (int)currentState);

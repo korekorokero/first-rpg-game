@@ -9,6 +9,7 @@ public class PlayerAction : MonoBehaviour
 {
     private bool buttonHold = false;
     private int attackCount = 0;
+    private bool arrowFired = false;
 
     private Animator anim;
 
@@ -20,6 +21,7 @@ public class PlayerAction : MonoBehaviour
     private void Update()
     {
         AttackAnimation();
+        CheckArrow();
     }
 
     private void OnAttack(InputValue attackValue)
@@ -38,13 +40,16 @@ public class PlayerAction : MonoBehaviour
 
     private void OnFire(InputValue fireValue)
     {
-        if (fireValue.isPressed)
+        if (!arrowFired)
         {
-            anim.SetBool("fire", true);
-        }
-        else
-        {
-            anim.SetBool("fire", false);
+            if (fireValue.isPressed)
+            {
+                anim.SetBool("fire", true);
+            }
+            else
+            {
+                anim.SetBool("fire", false);
+            }
         }
     }
 
@@ -60,5 +65,17 @@ public class PlayerAction : MonoBehaviour
             }
         }
 
+    }
+
+    private void CheckArrow()
+    {
+        if (transform.childCount == 0)
+        {
+            arrowFired = true;
+        }
+        else
+        {
+            arrowFired = false;
+        }
     }
 }
