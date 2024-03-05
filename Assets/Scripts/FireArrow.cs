@@ -7,17 +7,19 @@ using UnityEngine.InputSystem;
 
 public class FireArrow : MonoBehaviour
 {
-    [SerializeField] private GameObject player;
+    private int arrowDir = 0;
+    private bool firing = false;
+    private bool hitEnemy = false;
     [SerializeField] private float arrowSpeed = 15f;
     [SerializeField] private float arrowRange = 5f;
+
     private Animator animPlayer;
     private SpriteRenderer srPlayer, sr;
     private Rigidbody2D rb;
     private Vector2 arrowMovement;
-    private int arrowDir = 0;
-    private bool firing = false;
     private Vector2 arrowStart = Vector2.zero;
     private BoxCollider2D bc;
+    [SerializeField] private GameObject player;
 
     private void Start()
     {
@@ -89,15 +91,21 @@ public class FireArrow : MonoBehaviour
             bc.enabled = true;
             gameObject.transform.SetParent(null);
             rb.MovePosition(rb.position + (arrowMovement * arrowSpeed * Time.fixedDeltaTime));
-            if (rb.position.y <= arrowStart.y - arrowRange || rb.position.y >= arrowStart.y + arrowRange || rb.position.x <= arrowStart.x - arrowRange || rb.position.x >= arrowStart.x + arrowRange)
+            if (rb.position.y <= arrowStart.y - arrowRange || rb.position.y >= arrowStart.y + arrowRange || rb.position.x <= arrowStart.x - arrowRange || rb.position.x >= arrowStart.x + arrowRange || hitEnemy)
             {
-                sr.enabled = false;
-                bc.enabled = false;
-                firing = false;
+                sr.enabled = bc.enabled = firing = hitEnemy = false;
                 transform.SetParent(player.transform);
                 transform.position = transform.parent.position - new Vector3(0, 0.35f, 0);
             }
         }
        
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            hitEnemy = true;
+        }
     }
 }
